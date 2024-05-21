@@ -1,0 +1,37 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/MPLUSRounded1c-Black.ttf",
+      "sha1": "91a7f1cb260a63c77caac77eeeee0a079f6dbf43"
+    },
+    {
+      "path": "assets/fonts/MPLUSRounded1c-Bold.ttf",
+      "sha1": "a0fef8f5726fb43db9fbfe51fa1802f075464dd1"
+    },
+    {
+      "path": "assets/fonts/MPLUSRounded1c-ExtraBold.ttf",
+      "sha1": "c34ca937dbfdcfd9bc7523b7df3125eb164ff4ba"
+    },
+    {
+      "path": "assets/fonts/MPLUSRounded1c-Light.ttf",
+      "sha1": "e1b7dda55d8960aa5ab2e7259ad5a32aab991711"
+    },
+    {
+      "path": "assets/fonts/MPLUSRounded1c-Medium.ttf",
+      "sha1": "2fa528731da195f852e5f0e5c87ded8f03749544"
+    },
+    {
+      "path": "assets/fonts/MPLUSRounded1c-Regular.ttf",
+      "sha1": "7a765b8ca57cd4592baf29811b92063d23c05bf3"
+    },
+    {
+      "path": "assets/fonts/MPLUSRounded1c-Thin.ttf",
+      "sha1": "bd731bf18126e99ac84bab9a3f20b6ebaa9741cd"
+    },
+    {
+      "path": "assets/fonts/OFL.txt",
+      "sha1": "e13659b99c00d526bc4e885925a3cfd153281c73"
+    }
+  ]
+}

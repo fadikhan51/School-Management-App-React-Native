@@ -13,6 +13,9 @@ import AdminTeacherScreen from './screens/adminTeacherScreen';
 import SwipeTest from './screens/swipeTest';
 import Example from './screens/test';
 import ModalScreen from './screens/modalTest';
+import AgeReportScreen from './screens/ageReport';
+import SyllabusScreen from './screens/syllabus';
+import InsertMarksTeacher from './screens/InsertMarksteacher';
 import {gestureHandlerRootHOC} from 'react-native-gesture-handler';
 
 export default function App() {
@@ -24,6 +27,9 @@ export default function App() {
           name="modalTest"
           component={gestureHandlerRootHOC(ModalScreen)}
         />
+              <Stack.Screen name='syllabus' component={gestureHandlerRootHOC(SyllabusScreen)}/>
+      <Stack.Screen name='ageReport' component={gestureHandlerRootHOC(AgeReportScreen)}/>
+
         <Stack.Screen
           name="adminteacher"
           component={gestureHandlerRootHOC(AdminTeacherScreen)}
@@ -32,6 +38,8 @@ export default function App() {
           name="swipeTest"
           component={gestureHandlerRootHOC(SwipeTest)}
         />
+      <Stack.Screen name="insertMarks" component={gestureHandlerRootHOC(InsertMarksTeacher)} />
+
         <Stack.Screen
           name="studentfee"
           component={gestureHandlerRootHOC(StudentFeeScreen)}

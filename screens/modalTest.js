@@ -109,7 +109,7 @@ const ModalScreen = () => {
         <ModalPoup visible={visible}>
           <View style={{alignItems: 'center'}}>
             <View style={styles.header}>
-              <Text style={{alignSelf: 'center', fontSize: 20}}>
+              <Text style={{alignSelf: 'center', fontSize: 20, color:colors.dark}}>
                 Apply Filter
               </Text>
               <TouchableOpacity onPress={() => setVisible(false)}>

@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
   label: {
     marginLeft: 8,
     fontSize: 16,
+    colors:colors.dark,
   },
 });
 

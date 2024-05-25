@@ -100,7 +100,7 @@ export default stuTimeTable = () => {
               captureEvent={true}>
               <Image
                 style={styles.imgmodal}
-                source={require('../assets/stu.jpg')}></Image>
+                source={require('../assets/stuTimetable.jpg')}></Image>
             </ReactNativeZoomableView>
           </View>
         </View>

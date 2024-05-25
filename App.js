@@ -3,7 +3,6 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import AdminScreen from './screens/adminScreen';
-import AdminScreen from './screens/adminScreen';
 import LoginScreen from './screens/loginScreen';
 import ChooseRole from './screens/chooseRole';
 import TeacherScreen from './screens/teacherScreen';
@@ -40,6 +39,9 @@ export default function App() {
         <Stack.Screen
           name="agereport"
           component={gestureHandlerRootHOC(AgeReportScreen)}
+        />
+      </Stack.Navigator>
+
       <Stack.Navigator screenOptions={{headerShown: false}}>
         <Stack.Screen
           name="timetable"
@@ -73,6 +75,8 @@ export default function App() {
         <Stack.Screen
           name="insertMarks"
           component={gestureHandlerRootHOC(InsertMarksTeacher)}
+        />
+
         <Stack.Screen
           name="swipeTest"
           component={gestureHandlerRootHOC(SwipeTest)}

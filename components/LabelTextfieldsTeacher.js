@@ -1,16 +1,7 @@
 import React from 'react';
-import {
-  View,
-  Modal,
-  Text,
-  StyleSheet,
-  TextInput,
-  KeyboardAvoidingView,
-} from 'react-native';
-import {
-  TextInput as PaperTextInput,
-} from 'react-native-paper';
-import color from '../components/colors';
+import {View, Modal, Text, StyleSheet} from 'react-native';
+import {TextInput as PaperTextInput} from 'react-native-paper';
+import color from './colors';
 
 const labelandText = props => {
   const [text, setText] = React.useState('');
@@ -43,10 +34,7 @@ const styles = StyleSheet.create({
   textInput: {
     width: 286,
     alignItems: 'flex-start',
-    // Adjust border radius as needed
-
     marginBottom: 20,
-
     marginRight: 0, // Adjust padding as needed
   },
 });

@@ -3,7 +3,7 @@ import {View, Text, StyleSheet, Dimensions, ScrollView} from 'react-native';
 import colors from '../components/colors';
 import HeaderDefault from '../components/defaultHeader';
 import data from '../src/data/data';
-import AccordionScreen from './accordianTest';
+import AccordionScreen from '../testScreens/accordianTest';
 
 const StudentFeeScreen = () => {
   return (
@@ -24,7 +24,6 @@ const StudentFeeScreen = () => {
           <Text style={styles.tableDataCell}>15/08/24</Text>
         </View>
 
-        {/* Cards */}
       </View>
       <AccordionScreen/>
     </View>

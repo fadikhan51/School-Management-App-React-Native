@@ -12,17 +12,17 @@ import { Searchbar } from "react-native-paper";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import colors from "../components/colors";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
+import ModalComponent from "./insertMarksModal";
 const icons = [
-  { id: 2, image: require("../assets/Insert_Marks.png"), title: "Insert Marks" },
-  { id: 3, image: require("../assets/Update_Marks.png"), title: "Update Marks" },
+  { id: 2, image: require("../assets/MarksSumm.png"), title: "Marks Summary" },
+  { id: 3, image: require("../assets/payment.png"), title: "Fee Status" },
 
-  { id: 1, image: require("../assets/ViewMarks.png"), title: "View Marks" },
-  { id: 4, image: require("../assets/erase.png"), title: "Delete Marks" },
+  { id: 1, image: require("../assets/tt.png"), title: "TimeTable" },
+  { id: 4, image: require("../assets/syllabus.png"), title: "Syllabus" },
 
 ];
 
-const TeacherScreen = ({ navigation }) => {
+const StudentScreen = ({ navigation }) => {
 
   const [searchQuery, setSearchQuery] = React.useState('');
 
@@ -57,7 +57,7 @@ const TeacherScreen = ({ navigation }) => {
       <SafeAreaView style={styles.header}>
         <View style={styles.greeting}>
           <Text style={[styles.smollTxt]}>Hello</Text>
-          <Text style={[styles.greetTxt, styles.darkColor]}>Ustani Saab</Text>
+          <Text style={[styles.greetTxt, styles.darkColor]}>Bachay</Text>
         </View>
         <View style={styles.logout}>
           <TouchableHighlight
@@ -179,4 +179,4 @@ const styles = StyleSheet.create({
 
 })
 
-export default TeacherScreen;
+export default StudentScreen;

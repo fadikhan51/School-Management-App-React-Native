@@ -9,7 +9,13 @@ import {
   import colors from '../components/colors';
   import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
   import React, { useRef, useState } from 'react';
-
+  const countries = [
+    { country: 'Afghanistan', code: '93', iso: 'AF' },
+    { country: 'Albania', code: '355', iso: 'AL' },
+    { country: 'Algeria', code: '213', iso: 'DZ' },
+    { country: 'American Samoa', code: '1-684', iso: 'AS' },
+    { country: 'Andorra', code: '376', iso: 'AD' },
+  ];
   const classes = [
     { class:"Nursery" ,value:0 },
     { class:"Prep" , value:1 },

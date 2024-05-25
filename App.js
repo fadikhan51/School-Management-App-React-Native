@@ -1,9 +1,8 @@
 import React from 'react';
-import {View, Text} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
-import AdminScreen from './screens/adminScreen'; 
+import AdminScreen from './screens/adminScreen';
 import LoginScreen from './screens/loginScreen';
 import ChooseRole from './screens/chooseRole';
 import TeacherScreen from './screens/teacherScreen';
@@ -14,25 +13,41 @@ import AdminStudentScreen from './screens/adminStudentScreen';
 import AgeReportScreen from './screens/ageReportScreen';
 import SyllabusScreen from './screens/syllabus';
 import InsertMarksTeacher from './screens/InsertMarksteacher';
+import StudentScreen from './screens/StudentScreen';
 import {gestureHandlerRootHOC} from 'react-native-gesture-handler';
 
 export default function App() {
   const Stack = createNativeStackNavigator();
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{headerShown: false}} initialRouteName='agereport' >
-      <Stack.Screen
+      <Stack.Navigator
+        screenOptions={{headerShown: false}}
+        initialRouteName="syllabus">
+        <Stack.Screen
           name="adminstudent"
           component={gestureHandlerRootHOC(AdminStudentScreen)}
         />
-              <Stack.Screen name='syllabus' component={gestureHandlerRootHOC(SyllabusScreen)}/>
-      <Stack.Screen name='agereport' component={gestureHandlerRootHOC(AgeReportScreen)}/>
+        <Stack.Screen
+          name="studentscreen"
+          component={gestureHandlerRootHOC(StudentScreen)}
+        />
+        <Stack.Screen
+          name="syllabus"
+          component={gestureHandlerRootHOC(SyllabusScreen)}
+        />
+        <Stack.Screen
+          name="agereport"
+          component={gestureHandlerRootHOC(AgeReportScreen)}
+        />
 
         <Stack.Screen
           name="adminteacher"
           component={gestureHandlerRootHOC(AdminTeacherScreen)}
         />
-      <Stack.Screen name="insertMarks" component={gestureHandlerRootHOC(InsertMarksTeacher)} />
+        <Stack.Screen
+          name="insertMarks"
+          component={gestureHandlerRootHOC(InsertMarksTeacher)}
+        />
 
         <Stack.Screen
           name="studentfee"

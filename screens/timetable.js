@@ -1,27 +1,30 @@
-import React from "react";
+import React from 'react';
 import {
-    Image,
-    Text,
-    View,
-    StyleSheet,
-    TouchableHighlight,
-    ScrollView,
-    SafeAreaView,
-} from "react-native";
+  Image,
+  Text,
+  View,
+  StyleSheet,
+  TouchableHighlight,
+  ScrollView,
+  SafeAreaView,
+} from 'react-native';
 import DropDown from '../components/dropdown';
-import colors from "../components/colors";
-import { Button } from "react-native-paper";
-import HeaderDefault from "../components/defaultHeader";
-import Accordion from "../src/components/imgAccordianTest";
-
+import colors from '../components/colors';
+import {Button} from 'react-native-paper';
+import HeaderDefault from '../components/defaultHeader';
+import Accordion from '../src/components/imgAccordianTest';
 
 export default TimeTableScreen = () => {
-    return (
-        <View style={{ flex: 1 }}>
-            <HeaderDefault title="Time Table" leftIcon="arrow-left" rightIcon="folder-download-outline"/>
-            <DropDown width={'90%'} />
+  return (
+    <View style={{flex: 1}}>
+      <HeaderDefault
+        title="Time Table"
+        leftIcon="arrow-left"
+        rightIcon="folder-download-outline"
+      />
+      <DropDown width={'90%'} />
 
-            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+      <View style={{flexDirection: 'row', justifyContent: 'center'}}>
         <Button
           mode="contained"
           buttonColor={colors.dark}
@@ -46,21 +49,20 @@ export default TimeTableScreen = () => {
       </View>
       <Accordion />
     </View>
-    );
-}
+  );
+};
 const styles = StyleSheet.create({
-    
-    searchBtn: {
-        margin: 20,
-        height:60
-    },
-    searchTxt: {
-        paddingTop: 10,
-        fontWeight:'bold',
-    },
-    searchBtn: {
-        margin: 10,
-        width: 160,
-        height: 60,
-      },
-})
+  searchBtn: {
+    margin: 20,
+    height: 60,
+  },
+  searchTxt: {
+    paddingTop: 10,
+    fontWeight: 'bold',
+  },
+  searchBtn: {
+    margin: 10,
+    width: 160,
+    height: 60,
+  },
+});

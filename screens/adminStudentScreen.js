@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useRef, useCallback, useState} from 'react';
 import {
   View,
   StyleSheet,
@@ -13,6 +13,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import colors from '../components/colors';
 import HeaderDefault from '../components/defaultHeader';
 import {TextInput, Button} from 'react-native-paper';
+import ListItem from '../components/listItem';
 
 const ModalPoup = ({visible, children}) => {
   const [showModal, setShowModal] = React.useState(visible);
@@ -49,7 +50,7 @@ const ModalPoup = ({visible, children}) => {
   );
 };
 
-const ModalScreen = () => {
+const AdminStudentScreen = ({navigation}) => {
   const [checkedStates, setCheckedStates] = React.useState([
     false, // Nursery
     false, // Prep
@@ -84,6 +85,25 @@ const ModalScreen = () => {
 
   const [visible, setVisible] = React.useState(false);
   const [text, setText] = React.useState('');
+  const scrollRef = useRef(null);
+
+  //Dummy Data
+  const TITLES = [
+    'Record the dismissible tutorial 🎥',
+    'Leave 👍🏼 to the video',
+    'Check YouTube comments',
+    'Subscribe to the channel 🚀',
+    'Leave a ⭐️ on the GitHub Repo',
+    'g','gg'
+  ];
+
+  const TASKS = TITLES.map((title, index) => ({ title, index }));
+
+  const [tasks, setTasks] = useState(TASKS);
+  const onDismiss = useCallback(task => {
+    setTasks(tasks => tasks.filter(item => item.index !== task.index));
+  }, []);
+
   return (
     <>
       <HeaderDefault
@@ -148,6 +168,19 @@ const ModalScreen = () => {
       >
         Search
       </Button>
+      <ScrollView ref={scrollRef}>
+        {tasks.map(task => (
+          <ListItem
+            simultaneousHandlers={scrollRef}
+            key={task.index}
+            task={task}
+            onDismiss={onDismiss}
+          >
+          <Text style={styles.taskTitle}>Intehlaal Tallat</Text>
+          <Text style={styles.taskTitle}>Class 6</Text>
+          </ListItem>
+        ))}
+      </ScrollView>
       </View>
     </>
   );
@@ -191,6 +224,9 @@ const styles = StyleSheet.create({
     margin: 20,
     height: 60,
   },
+  taskTitle: {
+    fontSize: 16,
+  },
 });
 
-export default ModalScreen;
+export default AdminStudentScreen;

@@ -21,7 +21,7 @@ const LIST_ITEM_HEIGHT = 70;
 const {width: SCREEN_WIDTH} = Dimensions.get('window');
 const TRANSLATE_X_THRESHOLD = -SCREEN_WIDTH * 0.3;
 
-const ListItem = ({task, onDismiss, simultaneousHandlers}) => {
+const ListItem = ({task, onDismiss, simultaneousHandlers, children}) => {
   const translateX = useSharedValue(0);
   const itemHeight = useSharedValue(LIST_ITEM_HEIGHT);
   const marginVertical = useSharedValue(10);
@@ -84,8 +84,7 @@ const ListItem = ({task, onDismiss, simultaneousHandlers}) => {
         simultaneousHandlers={simultaneousHandlers}
         onGestureEvent={panGesture}>
         <Animated.View style={[styles.task, rStyle]}>
-          <Text style={styles.taskTitle}>Intehlaal Tallat</Text>
-          <Text style={styles.taskTitle}>Class 6</Text>
+          {children}
         </Animated.View>
       </PanGestureHandler>
     </Animated.View>
@@ -118,9 +117,7 @@ const styles = StyleSheet.create({
     // Shadow for Android
     elevation: 5,
   },
-  taskTitle: {
-    fontSize: 16,
-  },
+
   iconContainer: {
     height: LIST_ITEM_HEIGHT,
     width: LIST_ITEM_HEIGHT,

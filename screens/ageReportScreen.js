@@ -14,7 +14,7 @@ import colors from '../components/colors';
 import {Button} from 'react-native-paper';
 import {DataTable} from 'react-native-paper';
 
-export default ageReportScreen = () => {
+export default AgeReportScreen = () => {
   return (
     <View style={{flex: 1}}>
       <View style={styles.header}>

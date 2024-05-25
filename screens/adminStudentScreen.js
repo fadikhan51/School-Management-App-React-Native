@@ -15,7 +15,7 @@ import HeaderDefault from '../components/defaultHeader';
 import {TextInput, Button} from 'react-native-paper';
 import ListItem from '../components/listItem';
 
-const ModalPoup = ({visible, children}) => {
+export const ModalPoup = ({visible, children}) => {
   const [showModal, setShowModal] = React.useState(visible);
   const scaleValue = React.useRef(new Animated.Value(0)).current;
   React.useEffect(() => {
@@ -63,26 +63,6 @@ const AdminStudentScreen = ({navigation}) => {
     false, // Class 7
     false, // Class 8
   ]);
-
-  const labels = [
-    'Nursery',
-    'Prep',
-    'Class 1',
-    'Class 2',
-    'Class 3',
-    'Class 4',
-    'Class 5',
-    'Class 6',
-    'Class 7',
-    'Class 8',
-  ];
-
-  const toggleCheckbox = index => {
-    const updatedCheckedStates = [...checkedStates];
-    updatedCheckedStates[index] = !updatedCheckedStates[index];
-    setCheckedStates(updatedCheckedStates);
-  };
-
   const [visible, setVisible] = React.useState(false);
   const [text, setText] = React.useState('');
   const scrollRef = useRef(null);
@@ -115,7 +95,7 @@ const AdminStudentScreen = ({navigation}) => {
         style={{
           flexDirection: 'row',
           justifyContent: 'center',
-          paddingHorizontal: 20
+          paddingHorizontal: 20,
         }}>
         <TextInput
           style={styles.txtInput}
@@ -129,7 +109,8 @@ const AdminStudentScreen = ({navigation}) => {
         <ModalPoup visible={visible}>
           <View style={{alignItems: 'center'}}>
             <View style={styles.header}>
-              <Text style={{alignSelf: 'center', fontSize: 20, color:colors.dark}}>
+              <Text
+                style={{alignSelf: 'center', fontSize: 20, color: colors.dark}}>
                 Apply Filter
               </Text>
               <TouchableOpacity onPress={() => setVisible(false)}>
@@ -152,8 +133,14 @@ const AdminStudentScreen = ({navigation}) => {
             ))}
           </ScrollView>
         </ModalPoup>
-        <TouchableOpacity style={{paddingLeft:10, alignSelf:'center'}} onPress={()=> setVisible(true)}>
-          <MaterialCommunityIcons name="filter-outline" size={30} color={colors.dark} />
+        <TouchableOpacity
+          style={{paddingLeft: 10, alignSelf: 'center'}}
+          onPress={() => setVisible(true)}>
+          <MaterialCommunityIcons
+            name="filter-outline"
+            size={30}
+            color={colors.dark}
+          />
         </TouchableOpacity>
       </View>
       <View>

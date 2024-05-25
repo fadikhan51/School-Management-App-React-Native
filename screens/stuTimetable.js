@@ -12,7 +12,7 @@ import {
   FlatList,
   Modal,
 } from 'react-native';
-import DropDown from './dropdown';
+import DropDown from '../components/dropdown';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import colors from '../components/colors';
 import {Button} from 'react-native-paper';
@@ -70,7 +70,7 @@ export default stuTimeTable = () => {
         <TouchableOpacity onPress={() => setDialog(true)}>
           <Image
             style={styles.img}
-            source={require('../assets/stuTimetable.jpg')}></Image>
+            source={require('../assets/stu.jpg')}></Image>
         </TouchableOpacity>
       </View>
       <View style={styles.rulesContainer}>
@@ -100,7 +100,7 @@ export default stuTimeTable = () => {
               captureEvent={true}>
               <Image
                 style={styles.imgmodal}
-                source={require('../assets/stuTimetable.jpg')}></Image>
+                source={require('../assets/stu.jpg')}></Image>
             </ReactNativeZoomableView>
           </View>
         </View>

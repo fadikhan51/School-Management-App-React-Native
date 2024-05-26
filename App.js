@@ -23,7 +23,7 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator
         screenOptions={{headerShown: false}}
-        initialRouteName="studentfee">
+        initialRouteName="adminstudent">
         <Stack.Screen
           name="adminstudent"
           component={gestureHandlerRootHOC(AdminStudentScreen)}

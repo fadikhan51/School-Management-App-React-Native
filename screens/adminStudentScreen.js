@@ -1,4 +1,4 @@
-import React,{useRef, useCallback, useState} from 'react';
+import React, {useRef, useCallback, useState} from 'react';
 import {
   View,
   StyleSheet,
@@ -67,6 +67,12 @@ const AdminStudentScreen = ({navigation}) => {
   const [text, setText] = React.useState('');
   const scrollRef = useRef(null);
 
+  const toggleCheckbox = index => {
+    const updatedCheckedStates = [...checkedStates];
+    updatedCheckedStates[index] = !updatedCheckedStates[index];
+    setCheckedStates(updatedCheckedStates);
+  };
+  
   //Dummy Data
   const TITLES = [
     'Record the dismissible tutorial 🎥',
@@ -74,10 +80,22 @@ const AdminStudentScreen = ({navigation}) => {
     'Check YouTube comments',
     'Subscribe to the channel 🚀',
     'Leave a ⭐️ on the GitHub Repo',
-    'g','gg'
+    'g',
+    'gg',
   ];
-
-  const TASKS = TITLES.map((title, index) => ({ title, index }));
+  const labels = [
+    'Nursery',
+    'Prep',
+    'Class 1',
+    'Class 2',
+    'Class 3',
+    'Class 4',
+    'Class 5',
+    'Class 6',
+    'Class 7',
+    'Class 8',
+  ];
+  const TASKS = TITLES.map((title, index) => ({title, index}));
 
   const [tasks, setTasks] = useState(TASKS);
   const onDismiss = useCallback(task => {
@@ -144,30 +162,28 @@ const AdminStudentScreen = ({navigation}) => {
         </TouchableOpacity>
       </View>
       <View>
-      <Button
-        mode="contained"
-        buttonColor={colors.dark}
-        contentStyle={styles.searchTxt}
-        style={styles.searchBtn}
-        onPress={() => {
-            alert("tasks")
-        }}
-      >
-        Search
-      </Button>
-      <ScrollView ref={scrollRef}>
-        {tasks.map(task => (
-          <ListItem
-            simultaneousHandlers={scrollRef}
-            key={task.index}
-            task={task}
-            onDismiss={onDismiss}
-          >
-          <Text style={styles.taskTitle}>Intehlaal Tallat</Text>
-          <Text style={styles.taskTitle}>Class 6</Text>
-          </ListItem>
-        ))}
-      </ScrollView>
+        <Button
+          mode="contained"
+          buttonColor={colors.dark}
+          contentStyle={styles.searchTxt}
+          style={styles.searchBtn}
+          onPress={() => {
+            alert('tasks');
+          }}>
+          Search
+        </Button>
+        <ScrollView ref={scrollRef}>
+          {tasks.map(task => (
+            <ListItem
+              simultaneousHandlers={scrollRef}
+              key={task.index}
+              task={task}
+              onDismiss={onDismiss}>
+              <Text style={styles.taskTitle}>Intehlaal Tallat</Text>
+              <Text style={styles.taskTitle}>Class 6</Text>
+            </ListItem>
+          ))}
+        </ScrollView>
       </View>
     </>
   );

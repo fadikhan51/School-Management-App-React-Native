@@ -12,6 +12,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import Chevron from './Chevron';
 import colors from '../../components/colors';
+
 const Accordion = ({value, type}) => {
   const listRef = useAnimatedRef();
   const heightValue = useSharedValue(0);

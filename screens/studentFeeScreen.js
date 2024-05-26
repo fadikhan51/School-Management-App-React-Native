@@ -14,7 +14,7 @@ import colors from '../components/colors';
 import HeaderDefault from '../components/defaultHeader';
 import data from '../src/data/data';
 import AccordionScreen from '../testScreens/accordianTest';
-import {ModalPoup, toggleCheckbox} from './adminStudentScreen';
+import {ModalPoup} from './adminStudentScreen';
 import {TextInput, Button} from 'react-native-paper';
 
 const StudentFeeScreen = () => {
@@ -30,6 +30,11 @@ const StudentFeeScreen = () => {
     false, // Class 7
     false, // Class 8
   ]);
+  const toggleCheckbox = index => {
+    const updatedCheckedStates = [...checkedStates];
+    updatedCheckedStates[index] = !updatedCheckedStates[index];
+    setCheckedStates(updatedCheckedStates);
+  };
   const [visible, setVisible] = React.useState(false);
   const [text, setText] = React.useState('');
   const labels = [

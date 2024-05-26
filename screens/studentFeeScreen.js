@@ -13,8 +13,8 @@ import CustomCheckbox from '../components/checkBox';
 import colors from '../components/colors';
 import HeaderDefault from '../components/defaultHeader';
 import data from '../src/data/data';
-import AccordionScreen from './accordianTest';
-import { ModalPoup, toggleCheckbox, labels } from './modalTest';
+import AccordionScreen from '../testScreens/accordianTest';
+import {ModalPoup, toggleCheckbox} from './adminStudentScreen';
 import {TextInput, Button} from 'react-native-paper';
 
 const StudentFeeScreen = () => {
@@ -32,10 +32,26 @@ const StudentFeeScreen = () => {
   ]);
   const [visible, setVisible] = React.useState(false);
   const [text, setText] = React.useState('');
+  const labels = [
+    'Nursery',
+    'Prep',
+    'Class 1',
+    'Class 2',
+    'Class 3',
+    'Class 4',
+    'Class 5',
+    'Class 6',
+    'Class 7',
+    'Class 8',
+  ];
   return (
     <>
-    <HeaderDefault title="Fee Details" leftIcon='arrow-left' rightIcon='logout'/>
-    <View
+      <HeaderDefault
+        title="Fee Details"
+        leftIcon="arrow-left"
+        rightIcon="logout"
+      />
+      <View
         style={{
           flexDirection: 'row',
           justifyContent: 'center',
@@ -99,23 +115,23 @@ const StudentFeeScreen = () => {
           Search
         </Button>
       </View>
-    <View style={styles.container}>
-      <View style={styles.card}>
-        <View style={styles.tableRow}>
-          <Text style={styles.tableHeaderCell}>Amount</Text>
-          <Text style={styles.tableHeaderCell}>Paid</Text>
-          <Text style={styles.tableHeaderCell}>Unpaid</Text>
-          <Text style={styles.tableHeaderCell}>Due Date</Text>
+      <View style={styles.container}>
+        <View style={styles.card}>
+          <View style={styles.tableRow}>
+            <Text style={styles.tableHeaderCell}>Amount</Text>
+            <Text style={styles.tableHeaderCell}>Paid</Text>
+            <Text style={styles.tableHeaderCell}>Unpaid</Text>
+            <Text style={styles.tableHeaderCell}>Due Date</Text>
+          </View>
+          <View style={styles.tableRow}>
+            <Text style={styles.tableDataCell}>24,000</Text>
+            <Text style={styles.tableDataCell}>15,000</Text>
+            <Text style={styles.tableDataCell}>9,000</Text>
+            <Text style={styles.tableDataCell}>15/08/24</Text>
+          </View>
         </View>
-        <View style={styles.tableRow}>
-          <Text style={styles.tableDataCell}>24,000</Text>
-          <Text style={styles.tableDataCell}>15,000</Text>
-          <Text style={styles.tableDataCell}>9,000</Text>
-          <Text style={styles.tableDataCell}>15/08/24</Text>
-        </View>
+        <AccordionScreen />
       </View>
-      <AccordionScreen/>
-    </View>
     </>
   );
 };
@@ -123,7 +139,7 @@ const StudentFeeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    overflow:'hidden'
+    overflow: 'hidden',
   },
   card: {
     backgroundColor: '#fff',

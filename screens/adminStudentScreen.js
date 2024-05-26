@@ -95,6 +95,7 @@ const AdminStudentScreen = ({navigation}) => {
     'Class 7',
     'Class 8',
   ];
+
   const TASKS = TITLES.map((title, index) => ({title, index}));
 
   const [tasks, setTasks] = useState(TASKS);

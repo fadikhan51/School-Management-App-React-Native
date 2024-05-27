@@ -39,6 +39,7 @@ const ListItem = ({task, onDismiss, simultaneousHandlers, children}) => {
         marginVertical.value = withTiming(0);
         opacity.value = withTiming(0, undefined, isFinished => {
           if (isFinished && onDismiss) {
+            console.log(task)
             runOnJS(onDismiss)(task);
           }
         });

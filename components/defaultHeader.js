@@ -20,6 +20,7 @@ const HeaderDefault = props => {
           name={`${props.rightIcon}`}
           size={30}
           color={colors.dark}
+          onPress={props.onPress ? props.onPress : () => {}}
         />
       </View>
     </SafeAreaView>

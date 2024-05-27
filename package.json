@@ -17,6 +17,7 @@
     "@react-navigation/native-stack": "^6.9.26",
     "react": "18.2.0",
     "react-native": "0.74.1",
+    "react-native-date-picker": "^5.0.3",
     "react-native-file-viewer": "^2.1.5",
     "react-native-fs": "^2.20.0",
     "react-native-gesture-handler": "^2.16.2",

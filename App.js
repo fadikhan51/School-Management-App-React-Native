@@ -14,8 +14,8 @@ import AgeReportScreen from './screens/ageReportScreen';
 import SyllabusScreen from './screens/syllabus';
 import InsertMarksTeacher from './screens/InsertMarksteacher';
 import StudentScreen from './screens/StudentScreen';
-import stuTimeTable from './screens/stuTimetable';
 import FireStoreTest from './testScreens/firestoreTest';
+import stuTimeTable from './screens/stuTimetable';
 import {gestureHandlerRootHOC} from 'react-native-gesture-handler';
 
 export default function App() {

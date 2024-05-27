@@ -1,23 +1,280 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
-  Image,
-  Text,
   View,
+  Text,
   StyleSheet,
-  TouchableHighlight,
   ScrollView,
-  SafeAreaView,
+  Alert,
+  Platform,
+  PermissionsAndroid,
 } from 'react-native';
 import DropDown from '../components/dropdown';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
+import FileViewer from 'react-native-file-viewer';
+import RNFS from 'react-native-fs';
 import colors from '../components/colors';
 import {Button} from 'react-native-paper';
 import {DataTable} from 'react-native-paper';
+import firestore from '@react-native-firebase/firestore';
 
 export default AgeReportScreen = () => {
+  const [stdList, setStdList] = useState([]);
+  const stdRef = firestore().collection('Student');
+  
+  const labels = [
+    'Nursery',
+    'Prep',
+    'Class 1',
+    'Class 2',
+    'Class 3',
+    'Class 4',
+    'Class 5',
+    'Class 6',
+    'Class 7',
+    'Class 8',
+  ];
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      handleButtonPress();
+    }, 10);
+  
+    return () => clearTimeout(timer);
+  }, []);
+  async function handleButtonPress() {
+    const querySnapshot = await stdRef.get();
+    const tempStdList = [];
+    querySnapshot.forEach(doc => {
+      const {
+        admission_class,
+        admission_date,
+        caste,
+        dob,
+        email,
+        father_name,
+        gender,
+        name,
+        occupation,
+        reg_no,
+        password,
+        remarks,
+        residence,
+      } = doc.data();
+      tempStdList.push({
+        id: doc.id,
+        admission_class: admission_class,
+        caste: caste,
+        dob: dob,
+        email: email,
+        father_name: father_name,
+        gender: gender,
+        name: name,
+        occupation: occupation,
+        password: password,
+        reg_no: reg_no,
+        remarks: remarks,
+        residence: residence,
+        admission_date: admission_date,
+      });
+    });
+    console.log(tempStdList);
+    setStdList(tempStdList);
+  }
+
+  const createPDF = async () => {
+    try {
+      const htmlContent = generatePDFContent();
+      const directoryPath = await getDirectoryPath();
+      if (directoryPath) {
+        let PDFOptions = {
+          html: htmlContent,
+          fileName: 'ageReport',
+          directory: 'Documents',
+        };
+        const {filePath} = await RNHTMLtoPDF.convert(PDFOptions);
+        Alert.alert(
+          'Successfully Exported',
+          'Path: ' + filePath,
+          [
+            {
+              text: 'Cancel',
+              onPress: () => {
+                console.log('Cancel Pressed');
+              },
+              style: 'cancel',
+            },
+            {
+              text: 'Open',
+              onPress: () => {
+                openFile(filePath);
+              },
+            },
+          ],
+          {cancelable: true},
+        );
+      } else {
+        console.log('Failed to get directory path');
+      }
+    } catch (error) {
+      console.log('Failed to generate PDF:', error.message);
+      console.log('Error stack trace:', error.stack);
+      Alert.alert('Failed to generate PDF', error.message);
+    }
+  };
+
+  const generatePDFContent = () => {
+    return `
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Age Report</title>
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                }
+                .header {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    background-color: #333;
+                    color: #fff;
+                    padding: 16px;
+                }
+                .headerTxt {
+                    font-size: 18px;
+                    font-weight: bold;
+                }
+                .table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin-top: 16px;
+                }
+                .table th,
+                .table td {
+                    padding: 12px;
+                    text-align: left;
+                    border-bottom: 1px solid #ddd;
+                }
+                .table th {
+                    background-color: #f2f2f2;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <h1 class="headerTxt">Age Report</h1>
+            </div>
+            ${labels
+              .map(
+                label => `
+              <h2>${label}</h2>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Registration Number</th>
+                    <th>Age</th>
+                    <th>Father Name</th>
+                    <th>DOB</th>
+                    <th>Gender</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${stdList
+                    .filter(
+                      obj =>
+                        Object.entries(
+                          obj.admission_class,
+                        )[0][1].toLowerCase() === label.toLowerCase(),
+                    )
+                    .map(
+                      obj => `
+                      <tr>
+                        <td>${obj.name}</td>
+                        <td>${obj.reg_no}</td>
+                        <td>${
+                          new Date().getFullYear() -
+                          new Date(obj.dob.toDate()).getFullYear()
+                        }</td>
+                        <td>${obj.father_name}</td>
+                        <td>${new Date(
+                          obj.dob.toDate(),
+                        ).toLocaleDateString()}</td>
+                        <td>${obj.gender ? 'Male' : 'Female'}</td>
+                      </tr>
+                    `,
+                    )
+                    .join('')}
+                </tbody>
+
+              </table>
+              <p><b>Total Students :</b> ${
+                stdList.filter(
+                  obj =>
+                    Object.entries(obj.admission_class)[0][1].toLowerCase() ===
+                    label.toLowerCase(),
+                ).length
+              }</p>
+            `,
+              )
+              .join('')}
+        </body>
+        </html>
+      `;
+  };
+
+  const getDirectoryPath = async () => {
+    try {
+      let directoryPath;
+      if (Platform.OS === 'android') {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+          {
+            title: 'Storage Permission',
+            message:
+              'This app needs access to your storage to save the PDF file.',
+            buttonNeutral: 'Ask Me Later',
+            buttonNegative: 'Cancel',
+            buttonPositive: 'OK',
+          },
+        );
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          directoryPath = `${RNFS.ExternalStorageDirectoryPath}/Documents`;
+        } else if (granted === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
+          directoryPath = `${RNFS.DocumentDirectoryPath}/Documents`;
+        } else {
+          console.log('Storage permission denied');
+          return null;
+        }
+      } else {
+        directoryPath = `${RNFS.DocumentDirectoryPath}/Documents`;
+      }
+      await RNFS.mkdir(directoryPath);
+      return directoryPath;
+    } catch (error) {
+      console.log('Error getting directory path:', error.message);
+      return null;
+    }
+  };
+
+  const openFile = async filePath => {
+    try {
+      const fileExists = await RNFS.exists(filePath);
+      if (fileExists) {
+        await FileViewer.open(filePath);
+      } else {
+        console.log('File not found:', filePath);
+      }
+    } catch (error) {
+      console.log('Error opening file:', error.message);
+    }
+  };
   return (
-    <View style={{flex: 1}}>
+    <View style={{ flex: 1 }}>
       <View style={styles.header}>
         <View style={styles.backButton}>
           <MaterialCommunityIcons
@@ -26,7 +283,7 @@ export default AgeReportScreen = () => {
             color={colors.dark}
           />
         </View>
-        <Text style={[styles.headerTxt, {alignSelf: 'center'}]}>
+        <Text style={[styles.headerTxt, { alignSelf: 'center' }]}>
           Age Report
         </Text>
         <View style={styles.download}>
@@ -34,6 +291,7 @@ export default AgeReportScreen = () => {
             name="folder-download-outline"
             size={30}
             color={colors.dark}
+            onPress={createPDF}
           />
         </View>
       </View>
@@ -44,8 +302,7 @@ export default AgeReportScreen = () => {
         mode="contained"
         buttonColor={colors.dark}
         contentStyle={styles.searchTxt}
-        style={styles.searchBtn}
-        onPress={() => {}}>
+        style={styles.searchBtn}>
         Search
       </Button>
 
@@ -53,27 +310,47 @@ export default AgeReportScreen = () => {
         <DataTable style={styles.container}>
           <DataTable.Header style={styles.tableHeader}>
             <DataTable.Title style={styles.tableTitle}>Name</DataTable.Title>
-            <DataTable.Title style={styles.tableTitle}>Registration Number</DataTable.Title>
+            <DataTable.Title style={styles.tableTitle}>
+              Registration Number
+            </DataTable.Title>
             <DataTable.Title style={styles.tableTitle}>Age</DataTable.Title>
-            <DataTable.Title style={styles.tableTitle}>Father Name</DataTable.Title>
+            <DataTable.Title style={styles.tableTitle}>
+              Father Name
+            </DataTable.Title>
             <DataTable.Title style={styles.tableTitle}>DOB</DataTable.Title>
-            <DataTable.Title style={styles.tableTitle}>Total Boys/Girls</DataTable.Title>
+            <DataTable.Title style={styles.tableTitle}>Gender</DataTable.Title>
           </DataTable.Header>
-
-          <DataTable.Row style={styles.datarow}>
-            <DataTable.Cell style={styles.datacell}>Intahal Tallat</DataTable.Cell>
-            <DataTable.Cell style={styles.datacell}>FA21-BCS-032</DataTable.Cell>
-            <DataTable.Cell style={styles.datacell}>23</DataTable.Cell>
-            <DataTable.Cell style={styles.datacell}>Tallat</DataTable.Cell>
-            <DataTable.Cell style={styles.datacell}>20 April</DataTable.Cell>
-            <DataTable.Cell style={styles.datacell}>Girl</DataTable.Cell>
-          </DataTable.Row>
-          
+          {stdList.map((obj, index) => (
+            <DataTable.Row key={index} style={styles.datarow}>
+              <DataTable.Cell style={styles.datacell}>
+                {obj.name}
+              </DataTable.Cell>
+              <DataTable.Cell style={styles.datacell}>
+                {obj.reg_no}
+              </DataTable.Cell>
+              <DataTable.Cell style={styles.datacell}>
+                {
+                  new Date().getFullYear() -
+                  new Date(obj.dob.toDate()).getFullYear()
+                }
+              </DataTable.Cell>
+              <DataTable.Cell style={styles.datacell}>
+                {obj.father_name}
+              </DataTable.Cell>
+              <DataTable.Cell style={styles.datacell}>
+                {new Date(obj.dob.toDate()).toLocaleDateString()}
+              </DataTable.Cell>
+              <DataTable.Cell style={styles.datacell}>
+                {obj.gender ? 'Male' : 'Female'}
+              </DataTable.Cell>
+            </DataTable.Row>
+          ))}
         </DataTable>
       </ScrollView>
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   header: {
     paddingVertical: 25,
@@ -106,19 +383,18 @@ const styles = StyleSheet.create({
   tableHeader: {
     backgroundColor: '#DCDCDC',
   },
-  datarow:{
-    width: '100%', 
-    height: 50
+  datarow: {
+    width: '100%',
+    height: 50,
   },
-  datacell:{
-    width: 100 ,
+  datacell: {
+    width: 100,
     justifyContent: 'center',
   },
-  tableTitle:{
+  tableTitle: {
     width: '100%',
     height: 50,
     justifyContent: 'center',
     fontWeight: 'bold',
-
-  }
+  },
 });

@@ -25,7 +25,7 @@ const DropDown = (props) => {
   const [search, setSearch] = useState('');
   const [clicked, setClicked] = useState(false);
   const [data, setData] = useState(classes);
-  const [selectedCountry, setSelectedCountry] = useState('');
+  const [selectedCountry, setSelectedCountry] = useState(props.selected ? props.selected : '');
   const searchRef = useRef();
   const onSearch = search => {
     if (search !== '') {
@@ -74,7 +74,7 @@ const DropDown = (props) => {
             {
               position: 'absolute',
               top: 70,
-              zIndex: 1,
+              zIndex: 50000,
               elevation: 5,
               height: 300,
               alignSelf: 'center',
@@ -88,7 +88,7 @@ const DropDown = (props) => {
             alignSelf: 'center',
             backgroundColor: '#fff',
             borderRadius: 10,
-          }, props.width ? {width: props.width} : {width: '90%'}]}>
+          }, props.width ? {width: props.width+5} : {width: '90%'}]}>
           <TextInput
             placeholder="Search.."
             value={search}
@@ -126,6 +126,7 @@ const DropDown = (props) => {
                     borderColor: '#8e8e8e',
                   }}
                   onPress={() => {
+                    props.onSelect ? props.onSelect(item.class) : null;
                     setSelectedCountry(item.class);
                     setClicked(!clicked);
                     onSearch('');

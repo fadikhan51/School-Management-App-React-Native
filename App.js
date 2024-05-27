@@ -14,6 +14,7 @@ import AgeReportScreen from './screens/ageReportScreen';
 import SyllabusScreen from './screens/syllabus';
 import InsertMarksTeacher from './screens/InsertMarksteacher';
 import StudentScreen from './screens/StudentScreen';
+import FireStoreTest from './testScreens/firestoreTest';
 import {gestureHandlerRootHOC} from 'react-native-gesture-handler';
 
 export default function App() {
@@ -22,7 +23,7 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator
         screenOptions={{headerShown: false}}
-        initialRouteName="syllabus">
+        initialRouteName="adminstudent">
         <Stack.Screen
           name="adminstudent"
           component={gestureHandlerRootHOC(AdminStudentScreen)}

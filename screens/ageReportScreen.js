@@ -13,15 +13,16 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import FileViewer from 'react-native-file-viewer';
 import RNFS from 'react-native-fs';
-import colors from '../components/colors';
-import {Button} from 'react-native-paper';
-import {DataTable} from 'react-native-paper';
+import {Button, DataTable} from 'react-native-paper';
 import firestore from '@react-native-firebase/firestore';
+import colors from '../components/colors';
 
-export default AgeReportScreen = () => {
+const AgeReportScreen = () => {
   const [stdList, setStdList] = useState([]);
+  const [selectedClass, setSelectedClass] = useState(null);
+  const [bStdList, setBStdList] = useState([]);
   const stdRef = firestore().collection('Student');
-  
+
   const labels = [
     'Nursery',
     'Prep',
@@ -34,52 +35,48 @@ export default AgeReportScreen = () => {
     'Class 7',
     'Class 8',
   ];
+
   useEffect(() => {
-    const timer = setTimeout(() => {
-      handleButtonPress();
-    }, 10);
-  
-    return () => clearTimeout(timer);
+    handleButtonPress();
   }, []);
+
   async function handleButtonPress() {
     const querySnapshot = await stdRef.get();
     const tempStdList = [];
     querySnapshot.forEach(doc => {
-      const {
-        admission_class,
-        admission_date,
-        caste,
-        dob,
-        email,
-        father_name,
-        gender,
-        name,
-        occupation,
-        reg_no,
-        password,
-        remarks,
-        residence,
-      } = doc.data();
+      const {admission_class, dob, father_name, gender, name, reg_no} =
+        doc.data();
       tempStdList.push({
         id: doc.id,
         admission_class: admission_class,
-        caste: caste,
         dob: dob,
-        email: email,
         father_name: father_name,
         gender: gender,
         name: name,
-        occupation: occupation,
-        password: password,
         reg_no: reg_no,
-        remarks: remarks,
-        residence: residence,
-        admission_date: admission_date,
       });
     });
-    console.log(tempStdList);
     setStdList(tempStdList);
+    setBStdList(tempStdList);
   }
+
+  const handleSearchButtonPress = () => {
+    setStdList(bStdList);
+    
+    const filteredStudents = bStdList.filter((obj) => {
+        if (selectedClass) {
+            const classValues = Object.values(obj.admission_class);
+            if (!classValues.includes(selectedClass)) {
+                return false; 
+            }
+        }
+        return true; 
+    });
+    
+    setStdList(filteredStudents);
+    console.log(filteredStudents);
+};
+
 
   const createPDF = async () => {
     try {
@@ -273,8 +270,9 @@ export default AgeReportScreen = () => {
       console.log('Error opening file:', error.message);
     }
   };
+
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{flex: 1}}>
       <View style={styles.header}>
         <View style={styles.backButton}>
           <MaterialCommunityIcons
@@ -283,7 +281,7 @@ export default AgeReportScreen = () => {
             color={colors.dark}
           />
         </View>
-        <Text style={[styles.headerTxt, { alignSelf: 'center' }]}>
+        <Text style={[styles.headerTxt, {alignSelf: 'center'}]}>
           Age Report
         </Text>
         <View style={styles.download}>
@@ -296,13 +294,19 @@ export default AgeReportScreen = () => {
         </View>
       </View>
 
-      <DropDown />
+      <DropDown
+        onSelect={selected => {
+          setSelectedClass(selected === 'Select Class' ? null : selected);
+        }}
+      />
 
       <Button
         mode="contained"
         buttonColor={colors.dark}
         contentStyle={styles.searchTxt}
-        style={styles.searchBtn}>
+        style={styles.searchBtn}
+        onPress={handleSearchButtonPress} // Call the search button press handler
+      >
         Search
       </Button>
 
@@ -329,10 +333,8 @@ export default AgeReportScreen = () => {
                 {obj.reg_no}
               </DataTable.Cell>
               <DataTable.Cell style={styles.datacell}>
-                {
-                  new Date().getFullYear() -
-                  new Date(obj.dob.toDate()).getFullYear()
-                }
+                {new Date().getFullYear() -
+                  new Date(obj.dob.toDate()).getFullYear()}
               </DataTable.Cell>
               <DataTable.Cell style={styles.datacell}>
                 {obj.father_name}
@@ -398,3 +400,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
+
+export default AgeReportScreen;

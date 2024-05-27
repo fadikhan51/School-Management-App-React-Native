@@ -100,6 +100,7 @@ const DropDown = (props) => {
               setSearch(txt);
             }}
             style={{
+              marginTop: 10,
               width: '90%',
               height: 50,
               alignSelf: 'center',

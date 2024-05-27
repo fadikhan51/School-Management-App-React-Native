@@ -22,7 +22,7 @@ export default TimeTableScreen = () => {
         leftIcon="arrow-left"
         rightIcon="folder-download-outline"
       />
-      <DropDown width={'90%'} />
+      <DropDown/>
 
       <View style={{flexDirection: 'row', justifyContent: 'center'}}>
         <Button

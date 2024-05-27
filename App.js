@@ -15,6 +15,7 @@ import SyllabusScreen from './screens/syllabus';
 import InsertMarksTeacher from './screens/InsertMarksteacher';
 import StudentScreen from './screens/StudentScreen';
 import FireStoreTest from './testScreens/firestoreTest';
+import stuTimeTable from './screens/stuTimetable';
 import {gestureHandlerRootHOC} from 'react-native-gesture-handler';
 
 export default function App() {
@@ -40,6 +41,18 @@ export default function App() {
           name="agereport"
           component={gestureHandlerRootHOC(AgeReportScreen)}
         />
+        <Stack.Screen
+          name="timetable"
+          component={gestureHandlerRootHOC(TimetableScreen)}
+        />
+        <Stack.Screen
+          name="studentfee"
+          component={gestureHandlerRootHOC(StudentFeeScreen)}
+        />
+        <Stack.Screen
+          name="stuTimeTable"
+          component={gestureHandlerRootHOC(stuTimeTable)}
+        />
 
         <Stack.Screen
           name="adminteacher"
@@ -50,14 +63,11 @@ export default function App() {
           component={gestureHandlerRootHOC(InsertMarksTeacher)}
         />
 
-        <Stack.Screen
-          name="studentfee"
-          component={gestureHandlerRootHOC(StudentFeeScreen)}
-        />
-        <Stack.Screen
-          name="timetable"
-          component={gestureHandlerRootHOC(TimetableScreen)}
-        />
+        {/* <Stack.Screen
+          name="swipeTest"
+          component={gestureHandlerRootHOC(SwipeTest)}
+        /> */}
+
         <Stack.Screen
           name="admin"
           component={gestureHandlerRootHOC(AdminScreen)}

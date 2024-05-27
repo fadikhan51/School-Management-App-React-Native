@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import DropDown from '../components/dropdown';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import colors from '../components/colors';
 import {Button} from 'react-native-paper';
 import {DataTable} from 'react-native-paper';
@@ -65,16 +66,7 @@ export default AgeReportScreen = () => {
             <DataTable.Cell style={styles.datacell}>23</DataTable.Cell>
             <DataTable.Cell style={styles.datacell}>Tallat</DataTable.Cell>
             <DataTable.Cell style={styles.datacell}>20 April</DataTable.Cell>
-            <DataTable.Cell style={styles.datacell}>girl</DataTable.Cell>
-          </DataTable.Row>
-
-          <DataTable.Row style={styles.datarow}>
-            <DataTable.Cell style={styles.datacell}>Intahal Tallat</DataTable.Cell>
-            <DataTable.Cell style={styles.datacell}>032</DataTable.Cell>
-            <DataTable.Cell style={styles.datacell}>23</DataTable.Cell>
-            <DataTable.Cell style={styles.datacell}>Tallat</DataTable.Cell>
-            <DataTable.Cell style={styles.datacell}>20 April</DataTable.Cell>
-            <DataTable.Cell style={styles.datacell}>girl</DataTable.Cell>
+            <DataTable.Cell style={styles.datacell}>Girl</DataTable.Cell>
           </DataTable.Row>
           
         </DataTable>

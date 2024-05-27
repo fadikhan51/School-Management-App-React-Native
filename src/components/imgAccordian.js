@@ -1,6 +1,5 @@
-import {Pressable, StyleSheet, Text, View} from 'react-native';
+import {Pressable, StyleSheet, Text, View, Image} from 'react-native';
 import React from 'react';
-import {Category} from '../data/data';
 import Animated, {
   useAnimatedRef,
   useSharedValue,
@@ -10,10 +9,12 @@ import Animated, {
   useDerivedValue,
   withTiming,
 } from 'react-native-reanimated';
-import Chevron from './Chevron';
 import colors from '../../components/colors';
+import Chevron from './Chevron';
+import {ReactNativeZoomableView} from '@dudigital/react-native-zoomable-view';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const Accordion = ({value, type}) => {
+const Accordion = ({value, type, zoom, image}) => {
   const listRef = useAnimatedRef();
   const heightValue = useSharedValue(0);
   const open = useSharedValue(false);
@@ -24,6 +25,10 @@ const Accordion = ({value, type}) => {
   const heightAnimationStyle = useAnimatedStyle(() => ({
     height: heightValue.value,
   }));
+
+  if (!value) {
+    return null; // return early if value is undefined
+  }
 
   return (
     <View style={styles.container}>
@@ -40,14 +45,16 @@ const Accordion = ({value, type}) => {
           open.value = !open.value;
         }}
         style={styles.titleContainer}>
-        <Text style={styles.textTitle}>{value.title}</Text>
+        <Text style={styles.textTitle}>Nursery</Text>
         <View style={styles.downIcon}>
           <Text
             style={[
               styles.status,
               {
                 color:
-                  value.status.toLowerCase() == 'paid' ? colors.green : colors.red,
+                  value.status?.toLowerCase() == 'paid'
+                    ? colors.green
+                    : colors.red,
               },
             ]}>
             {value.status}
@@ -59,30 +66,29 @@ const Accordion = ({value, type}) => {
 
       <Animated.View style={heightAnimationStyle}>
         <Animated.View style={styles.contentContainer} ref={listRef}>
-          {value.content.map((v, i) => {
-              return (
-                <View key={i} style={styles.content}>
-                  <View style={styles.detailsContainer}>
-                    <View>
-                      <Text style={styles.detailsTitle}>Details</Text>
-                      <Text style={styles.detailsText}>Amount Due</Text>
-                      <Text style={styles.detailsText}>Paid Amount</Text>
-                      <Text style={styles.detailsText}>Balance</Text>
-                      <Text style={styles.detailsText}>Due Date</Text>
-                      <Text style={styles.detailsText}>Remarks</Text>
-                    </View>
-                    <View>
-                      <Text style={styles.detailsTitle}>Amount</Text>
-                      <Text style={styles.detailsText}>{v.DueAmount}</Text>
-                      <Text style={styles.detailsText}>{v.PaidAmount}</Text>
-                      <Text style={styles.detailsText}>{v.Balance}</Text>
-                      <Text style={styles.detailsText}>{v.DueDate}</Text>
-                      <Text style={styles.detailsText}>{v.Remarks}</Text>
-                    </View>
-                  </View>
+          <View style={styles.content}>
+            <View style={styles.detailsContainer}>
+              {image ? (
+                <ReactNativeZoomableView
+                  maxZoom={1.5}
+                  minZoom={1}
+                  zoomStep={0.5}
+                  initialZoom={1}
+                  bindToBorders={true}
+                  captureEvent={true}>
+                  <Image style={styles.imgmodal} source={image} />
+                </ReactNativeZoomableView>
+              ) : (
+                <View style={styles.iconContainer}>
+                  <MaterialCommunityIcons
+                    name="plus-circle-outline"
+                    size={70}
+                    color={colors.dark}>
+                  </MaterialCommunityIcons>
                 </View>
-              );
-            })}
+              )}
+            </View>
+          </View>
         </Animated.View>
       </Animated.View>
     </View>
@@ -145,5 +151,30 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontFamily: 'MPLUSRounded1c',
   },
+  imgmodal: {
+    width: '100%',
+    height: 200,
+    resizeMode: 'contain',
+  },
   downIcon: {flexDirection: 'row', alignItems: 'center'},
+  content: {
+    padding: 20,
+    backgroundColor: colors.light + '10',
+  },
+  textTitle: {
+    fontSize: 17,
+    color: colors.dark,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  imgmodal: {
+    width: '100%',
+    height: 200,
+    resizeMode: 'contain',
+  },
+  iconContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });

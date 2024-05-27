@@ -1,15 +1,21 @@
 import {ScrollView, StyleSheet} from 'react-native';
 import React from 'react';
-import data from '../src/data/data';
-import Accordion from '../src/components/Accordian';
+import Accordion from './imgAccordian';
 import {SafeAreaView} from 'react-native-safe-area-context';
+
 const AccordionScreen = () => {
+  const imageSource = require('../../assets/timetable.jpg');
+
   return (
     <SafeAreaView style={styles.container} edges={['bottom', 'right', 'left']}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        {data.map((value, index) => {
-          return <Accordion value={value} key={index} type={value.type} />;
-        })}
+        <Accordion
+          value={{
+            title: 'Time Table',
+            type: 'timetable',
+          }}
+          image={require('../../assets/stu.jpg')}
+        />
       </ScrollView>
     </SafeAreaView>
   );

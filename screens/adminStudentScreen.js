@@ -19,7 +19,7 @@ import ModalBottomTest from '../components/stdDetailsModal';
 
 const stdRef = firestore().collection('Student');
 
-const ModalPoup = ({visible, children}) => {
+export const ModalPoup = ({visible, children}) => {
   const [showModal, setShowModal] = React.useState(visible);
   const scaleValue = React.useRef(new Animated.Value(0)).current;
   React.useEffect(() => {

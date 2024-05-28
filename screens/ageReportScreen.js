@@ -74,7 +74,6 @@ const AgeReportScreen = () => {
     });
     
     setStdList(filteredStudents);
-    console.log(filteredStudents);
 };
 
 
@@ -173,7 +172,7 @@ const AgeReportScreen = () => {
                 <thead>
                   <tr>
                     <th>Name</th>
-                    <th>Registration Number</th>
+                    <th>RollNo</th>
                     <th>Age</th>
                     <th>Father Name</th>
                     <th>DOB</th>

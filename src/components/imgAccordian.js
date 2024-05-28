@@ -9,12 +9,16 @@ import Animated, {
   useDerivedValue,
   withTiming,
 } from 'react-native-reanimated';
+import {useEffect, useState} from 'react';
+import RNFS from 'react-native-fs';
 import colors from '../../components/colors';
 import Chevron from './Chevron';
 import {ReactNativeZoomableView} from '@dudigital/react-native-zoomable-view';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {Button} from 'react-native-paper';
+import {launchImageLibrary} from 'react-native-image-picker';
 
-const Accordion = ({value, type, zoom, image}) => {
+const Accordion = ({value, type, zoom, passedclass, image, onImagePicked}) => {
   const listRef = useAnimatedRef();
   const heightValue = useSharedValue(0);
   const open = useSharedValue(false);
@@ -26,6 +30,33 @@ const Accordion = ({value, type, zoom, image}) => {
     height: heightValue.value,
   }));
 
+  const [pickedImage, setPickedImage] = useState(null);
+
+  const onPressIcon = () => {
+    console.log('Icon pressed');
+    launchImageLibrary({mediaType: 'photo'}, response => {
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.errorMessage) {
+        console.error('ImagePicker Error: ', response.errorMessage);
+      } else {
+        const source = {uri: response.assets[0].uri};
+        setPickedImage(source);
+
+        RNFS.readFile(response.assets[0].uri, 'base64')
+          .then(base64Data => {
+            // Send base64 data to the parent component
+            // Assuming you have a prop called onImagePicked to handle this
+            if (typeof onImagePicked === 'function') {
+              onImagePicked(base64Data);
+            }
+          })
+          .catch(error => {
+            console.error('Error converting image to base64:', error);
+          });
+      }
+    });
+  };
   if (!value) {
     return null; // return early if value is undefined
   }
@@ -45,7 +76,7 @@ const Accordion = ({value, type, zoom, image}) => {
           open.value = !open.value;
         }}
         style={styles.titleContainer}>
-        <Text style={styles.textTitle}>Nursery</Text>
+        <Text style={styles.textTitle}>{passedclass}</Text>
         <View style={styles.downIcon}>
           <Text
             style={[
@@ -68,7 +99,26 @@ const Accordion = ({value, type, zoom, image}) => {
         <Animated.View style={styles.contentContainer} ref={listRef}>
           <View style={styles.content}>
             <View style={styles.detailsContainer}>
-              {image ? (
+              {!image.uri ? (
+                !pickedImage ? (
+                  <Pressable onPress={onPressIcon} style={styles.iconContainer}>
+                    <MaterialCommunityIcons
+                      name="plus-circle-outline"
+                      size={70}
+                      color={colors.dark}></MaterialCommunityIcons>
+                  </Pressable>
+                ) : (
+                  <ReactNativeZoomableView
+                    maxZoom={1.5}
+                    minZoom={1}
+                    zoomStep={0.5}
+                    initialZoom={1}
+                    bindToBorders={true}
+                    captureEvent={true}>
+                    <Image style={styles.imgmodal} source={pickedImage} />
+                  </ReactNativeZoomableView>
+                )
+              ) : (
                 <ReactNativeZoomableView
                   maxZoom={1.5}
                   minZoom={1}
@@ -78,14 +128,6 @@ const Accordion = ({value, type, zoom, image}) => {
                   captureEvent={true}>
                   <Image style={styles.imgmodal} source={image} />
                 </ReactNativeZoomableView>
-              ) : (
-                <View style={styles.iconContainer}>
-                  <MaterialCommunityIcons
-                    name="plus-circle-outline"
-                    size={70}
-                    color={colors.dark}>
-                  </MaterialCommunityIcons>
-                </View>
               )}
             </View>
           </View>
@@ -107,6 +149,11 @@ const styles = StyleSheet.create({
     elevation: 4,
     borderColor: colors.white,
     overflow: 'hidden',
+  },
+  searchBtn: {
+    margin: 10,
+    width: 160,
+    height: 60,
   },
   textTitle: {
     fontSize: 17,

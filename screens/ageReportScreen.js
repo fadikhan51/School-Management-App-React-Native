@@ -53,22 +53,31 @@ export default AgeReportScreen = () => {
         <DataTable style={styles.container}>
           <DataTable.Header style={styles.tableHeader}>
             <DataTable.Title style={styles.tableTitle}>Name</DataTable.Title>
-            <DataTable.Title style={styles.tableTitle}>Registration Number</DataTable.Title>
+            <DataTable.Title style={styles.tableTitle}>
+              Registration Number
+            </DataTable.Title>
             <DataTable.Title style={styles.tableTitle}>Age</DataTable.Title>
-            <DataTable.Title style={styles.tableTitle}>Father Name</DataTable.Title>
+            <DataTable.Title style={styles.tableTitle}>
+              Father Name
+            </DataTable.Title>
             <DataTable.Title style={styles.tableTitle}>DOB</DataTable.Title>
-            <DataTable.Title style={styles.tableTitle}>Total Boys/Girls</DataTable.Title>
+            <DataTable.Title style={styles.tableTitle}>
+              Total Boys/Girls
+            </DataTable.Title>
           </DataTable.Header>
 
           <DataTable.Row style={styles.datarow}>
-            <DataTable.Cell style={styles.datacell}>Intahal Tallat</DataTable.Cell>
-            <DataTable.Cell style={styles.datacell}>FA21-BCS-032</DataTable.Cell>
+            <DataTable.Cell style={styles.datacell}>
+              Intahal Tallat
+            </DataTable.Cell>
+            <DataTable.Cell style={styles.datacell}>
+              FA21-BCS-032
+            </DataTable.Cell>
             <DataTable.Cell style={styles.datacell}>23</DataTable.Cell>
             <DataTable.Cell style={styles.datacell}>Tallat</DataTable.Cell>
             <DataTable.Cell style={styles.datacell}>20 April</DataTable.Cell>
             <DataTable.Cell style={styles.datacell}>Girl</DataTable.Cell>
           </DataTable.Row>
-          
         </DataTable>
       </ScrollView>
     </View>
@@ -106,19 +115,18 @@ const styles = StyleSheet.create({
   tableHeader: {
     backgroundColor: '#DCDCDC',
   },
-  datarow:{
-    width: '100%', 
-    height: 50
+  datarow: {
+    width: '100%',
+    height: 50,
   },
-  datacell:{
-    width: 100 ,
+  datacell: {
+    width: 100,
     justifyContent: 'center',
   },
-  tableTitle:{
+  tableTitle: {
     width: '100%',
     height: 50,
     justifyContent: 'center',
     fontWeight: 'bold',
-
-  }
+  },
 });

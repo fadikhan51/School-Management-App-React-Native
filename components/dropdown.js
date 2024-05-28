@@ -1,27 +1,20 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  TextInput,
-  FlatList,
-} from 'react-native';
+import {View, Text, TouchableOpacity, TextInput, FlatList} from 'react-native';
 import colors from './colors';
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import React, { useRef, useState } from 'react';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import React, {useRef, useState} from 'react';
 const classes = [
-  { class:"Nursery" ,value:0 },
-  { class:"Prep" , value:1 },
-  { class:"Class 1" ,value:2 },
-  { class:"Class 2" ,value:3 },
-  { class:"Class 3" ,value:4 },
-  { class:"Class 4" ,value:5 },
-  { class:"Class 5" ,value:6 },
-  { class:"Class 6" ,value:7 },
-  { class:"Class 7" ,value:8 },
-  { class:"Class 8" ,value:9 }
-
+  {class: 'Nursery', value: 0},
+  {class: 'Prep', value: 1},
+  {class: 'Class 1', value: 2},
+  {class: 'Class 2', value: 3},
+  {class: 'Class 3', value: 4},
+  {class: 'Class 4', value: 5},
+  {class: 'Class 5', value: 6},
+  {class: 'Class 6', value: 7},
+  {class: 'Class 7', value: 8},
+  {class: 'Class 8', value: 9},
 ];
-const DropDown = (props) => {
+const DropDown = props => {
   const [search, setSearch] = useState('');
   const [clicked, setClicked] = useState(false);
   const [data, setData] = useState(classes);
@@ -58,43 +51,51 @@ const DropDown = (props) => {
         onPress={() => {
           setClicked(!clicked);
         }}>
-        <Text style={{ fontWeight: '600', color: colors.dark }}>
+        <Text style={{fontWeight: '600', color: colors.dark}}>
           {selectedCountry == '' ? 'Select Class' : selectedCountry}
         </Text>
         {clicked ? (
-          <MaterialCommunityIcons name="menu-up" size={30} color={colors.dark} />
-
+          <MaterialCommunityIcons
+            name="menu-up"
+            size={30}
+            color={colors.dark}
+          />
         ) : (
-          <MaterialCommunityIcons name="menu-down" size={30} color={colors.dark} />
+          <MaterialCommunityIcons
+            name="menu-down"
+            size={30}
+            color={colors.dark}
+          />
         )}
       </TouchableOpacity>
       {clicked ? (
         <View
-          style={[props.displayTop ? 
-            {
-              position: 'absolute',
-              top: 70,
-              zIndex: 1,
-              elevation: 5,
-              height: 300,
-              alignSelf: 'center',
-              backgroundColor: '#fff',
-              borderRadius: 10,
-            }
-          : {
-            elevation: 5,
-            marginTop: 20,
-            height: 300,
-            alignSelf: 'center',
-            backgroundColor: '#fff',
-            borderRadius: 10,
-          }, props.width ? {width: props.width} : {width: '90%'}]}>
+          style={[
+            props.displayTop
+              ? {
+                  position: 'absolute',
+                  top: 70,
+                  zIndex: 1,
+                  elevation: 5,
+                  height: 300,
+                  alignSelf: 'center',
+                  backgroundColor: '#fff',
+                  borderRadius: 10,
+                }
+              : {
+                  elevation: 5,
+                  marginTop: 20,
+                  height: 300,
+                  alignSelf: 'center',
+                  backgroundColor: '#fff',
+                  borderRadius: 10,
+                },
+            props.width ? {width: props.width} : {width: '90%'},
+          ]}>
           <TextInput
             placeholder="Search.."
             value={search}
             ref={searchRef}
-            
-
             onChangeText={txt => {
               onSearch(txt);
               setSearch(txt);
@@ -108,13 +109,13 @@ const DropDown = (props) => {
               borderRadius: 7,
               margin: 20,
               paddingLeft: 20,
-              color: 'black'
+              color: 'black',
             }}
           />
 
           <FlatList
             data={data}
-            renderItem={({ item, index }) => {
+            renderItem={({item, index}) => {
               return (
                 <TouchableOpacity
                   style={{
@@ -130,8 +131,11 @@ const DropDown = (props) => {
                     setClicked(!clicked);
                     onSearch('');
                     setSearch('');
+                    props.onselect(item.class);
                   }}>
-                  <Text style={{ fontWeight: '600', color: colors.dark }}>{item.class}</Text>
+                  <Text style={{fontWeight: '600', color: colors.dark}}>
+                    {item.class}
+                  </Text>
                 </TouchableOpacity>
               );
             }}

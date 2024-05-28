@@ -26,7 +26,7 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator
         screenOptions={{headerShown: false}}
-        initialRouteName="ageReport">
+        initialRouteName="timetable">
         <Stack.Screen
           name="adminstudent"
           component={gestureHandlerRootHOC(AdminStudentScreen)}

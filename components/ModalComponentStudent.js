@@ -30,7 +30,7 @@ const ModalComponent = ({isVisible, onClose}) => {
               label="Name"
               mode="outlined"
               outlineColor="#3D3B4000"
-              disabled={true}
+              disabled={false}
               theme={{
                 roundness: 10,
               }}

@@ -1,12 +1,7 @@
 import React from 'react';
 import {
-  Image,
-  Text,
   View,
   StyleSheet,
-  TouchableHighlight,
-  ScrollView,
-  SafeAreaView,
 } from 'react-native';
 import DropDown from '../components/dropdown';
 import colors from '../components/colors';
@@ -33,7 +28,7 @@ export default SyllabusScreen = () => {
           onPress={() => {
             /* Update logic */
           }}>
-          Update
+          Upload
         </Button>
         <Button
           mode="contained"

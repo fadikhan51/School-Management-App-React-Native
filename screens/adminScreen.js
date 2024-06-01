@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   Image,
   Text,
@@ -7,39 +7,76 @@ import {
   TouchableHighlight,
   ScrollView,
   SafeAreaView,
+  Modal,
+  TouchableOpacity,
 } from 'react-native';
 import {Searchbar} from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import colors from '../components/colors';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-
-import TimetableScreen from '../components/dropdown';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 const icons = [
-  {id: 1, image: require('../assets/tch.png'), title: 'Teacher'},
-  {id: 2, image: require('../assets/std.png'), title: 'Student'},
-  {id: 3, image: require('../assets/budget.png'), title: 'Finance'},
-  {id: 4, image: require('../assets/analytics.png'), title: 'Analytics'},
-  {id: 5, image: require('../assets/schedule.png'), title: 'Timetable'},
-  {id: 6, image: require('../assets/syllabus.png'), title: 'Syllabus'},
-  {id: 7, image: require('../assets/download.png'), title: 'Download'},
+  {
+    id: 1,
+    image: require('../assets/tch.png'),
+    title: 'Teacher',
+    navigate: 'AddTeacher',
+  },
+  {
+    id: 2,
+    image: require('../assets/std.png'),
+    title: 'Student',
+    navigate: 'AddStudent',
+  },
+  {
+    id: 3,
+    image: require('../assets/budget.png'),
+    title: 'Finance',
+    navigate: 'FeeStatusForm',
+  },
+  {
+    id: 4,
+    image: require('../assets/analytics.png'),
+    title: 'Analytics',
+    navigate: 'AnalyticsModal'
+  },
+  {
+    id: 5,
+    image: require('../assets/schedule.png'),
+    title: 'Timetable',
+    navigate: 'TimeTable',
+  },
+  {
+    id: 6,
+    image: require('../assets/syllabus.png'),
+    title: 'Syllabus',
+    navigate: 'syllabusScreen',
+  }
 ];
-
-
-const renderItem = item => (
-  <View style={styles.iconsContainer}>
-    <TouchableHighlight style={styles.iconContainer} key={item.id}>
-      <View style={styles.iconWithText}>
-        <Image source={item.image} style={styles.icon} />
-        <Text style={styles.title}>{item.title}</Text>
-      </View>
-    </TouchableHighlight>
-  </View>
-);
 
 const AdminScreen = ({navigation}) => {
   const [searchQuery, setSearchQuery] = React.useState('');
-  const Stack = createNativeStackNavigator();
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const renderItem = item => (
+    <View style={styles.iconsContainer} key={item.id}>
+      <TouchableHighlight
+        style={styles.iconContainer}
+        underlayColor="white"
+        onPress={() => {
+          if (item.navigate === 'AnalyticsModal') {
+            setModalVisible(true);
+          } else {
+            navigation.navigate(item.navigate);
+          }
+        }}>
+        <View style={styles.iconWithText}>
+          <Image source={item.image} style={styles.icon} />
+          <Text style={styles.title}>{item.title}</Text>
+        </View>
+      </TouchableHighlight>
+    </View>
+  );
 
   return (
     <GestureHandlerRootView>
@@ -47,7 +84,7 @@ const AdminScreen = ({navigation}) => {
         <SafeAreaView style={styles.header}>
           <View style={styles.greeting}>
             <Text style={[styles.smollTxt]}>Hello</Text>
-            <Text style={[styles.greetTxt, styles.darkColor]}>Master Saab</Text>
+            <Text style={[styles.greetTxt, styles.darkColor]}>Mr Admin</Text>
           </View>
           <View style={styles.logout}>
             <TouchableHighlight
@@ -86,6 +123,33 @@ const AdminScreen = ({navigation}) => {
         <ScrollView contentContainerStyle={styles.container}>
           {icons.map(item => renderItem(item))}
         </ScrollView>
+
+        <Modal
+          visible={modalVisible}
+          transparent={true}
+          animationType="slide"
+          onRequestClose={() => setModalVisible(false)}>
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContent}>
+              <TouchableOpacity
+                style={styles.modalOption}
+                onPress={() => {
+                  setModalVisible(false);
+                  navigation.navigate('StudentAgeRecord');
+                }}>
+                <Text style={styles.modalText}>Age Report</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.modalOption}
+                onPress={() => {
+                  setModalVisible(false);
+                  navigation.navigate('StudentResultReport');
+                }}>
+                <Text style={styles.modalText}>Result Report</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
       </View>
     </GestureHandlerRootView>
   );
@@ -162,6 +226,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     flexWrap: 'wrap',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 20,
+  },
+  modalOption: {
+    paddingVertical: 10,
+  },
+  modalText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: colors.dark,
   },
 });
 

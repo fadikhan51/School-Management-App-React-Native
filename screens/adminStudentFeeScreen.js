@@ -17,11 +17,10 @@ import CustomCheckbox from '../components/checkBox';
 import colors from '../components/colors';
 import HeaderDefault from '../components/defaultHeader';
 import AccordionScreen from '../fatimaComponents/accordianTest';
-import Accordian from '../fatimaComponents/Accordian';
 import {ModalPoup} from './adminStudentScreen';
 import {TextInput, Button} from 'react-native-paper';
 
-const StudentFeeScreen = ({navigation, route}) => {
+const StudentFeeScreen = () => {
   const [feeRecords, setFeeRecords] = React.useState([]);
   const [txtinput, settxtinput] = React.useState('');
 
@@ -56,13 +55,6 @@ const StudentFeeScreen = ({navigation, route}) => {
     'Class 7',
     'Class 8',
   ];
-
-  // const{regNo} = route.params.userData.reg_no;
-  
-  React.useEffect(()=>{
-    fetchStudentInfo(route.params.userData.reg_no)
-  },[]);
-
   const fetchStudentInfo = async (regNo) => {
     try {
         // First, query the 'Student' collection based on the registration number
@@ -121,6 +113,67 @@ const StudentFeeScreen = ({navigation, route}) => {
           justifyContent: 'center',
           paddingHorizontal: 20,
         }}>
+        <TextInput
+          style={styles.txtInput}
+          selectionColor={colors.dark}
+          cursorColor="black"
+          activeOutlineColor="black"
+          mode="outlined"
+          label={'Search by Reg no'}
+          onChangeText={(text)=>{
+
+            setText(text)
+
+          }}
+        />
+        <ModalPoup visible={visible}>
+          <View style={{alignItems: 'center'}}>
+            <View style={styles.header}>
+              <Text
+                style={{alignSelf: 'center', fontSize: 20, color: colors.dark}}>
+                Apply Filter
+              </Text>
+              <TouchableOpacity onPress={() => setVisible(false)}>
+                <MaterialCommunityIcons
+                  name="window-close"
+                  size={25}
+                  color={colors.dark}
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
+          <ScrollView contentContainerStyle={styles.Scontainer}>
+            {labels.map((label, index) => (
+              <CustomCheckbox
+                key={index}
+                label={label}
+                checked={checkedStates[index]}
+                setChecked={() => toggleCheckbox(index)}
+              />
+            ))}
+          </ScrollView>
+        </ModalPoup>
+        <TouchableOpacity
+          style={{paddingLeft: 10, alignSelf: 'center'}}
+          onPress={() => setVisible(true)}>
+          <MaterialCommunityIcons
+            name="filter-outline"
+            size={30}
+            color={colors.dark}
+          />
+        </TouchableOpacity>
+      </View>
+      <View>
+        <Button
+          mode="contained"
+          buttonColor={colors.dark}
+          contentStyle={styles.searchTxt}
+          style={styles.searchBtn}
+          onPress={() => {
+            fetchStudentInfo(text)
+          }}>
+          Search
+        </Button>
       </View>
       <View style={styles.container}>
         <View style={styles.card}>
@@ -131,7 +184,7 @@ const StudentFeeScreen = ({navigation, route}) => {
           </View>
           
         </View>
-        { feeRecords.length>0  &&  <AccordionScreen feeRecords={feeRecords} />}
+        { feeRecords.length>0  &&    <AccordionScreen feeRecords={feeRecords} />}
         
       </View>
     </>

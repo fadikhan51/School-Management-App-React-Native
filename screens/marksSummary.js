@@ -9,13 +9,13 @@ import {
   ScrollView,
   SafeAreaView,
 } from 'react-native';
-import DropDown from './dropdown';
+import DropDown from '../components/dropdown';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import colors from '../components/colors';
 import {Button} from 'react-native-paper';
 import {grey100} from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
 
-export default marksSummary = () => {
+export default MarksSummary = ({student}) => {
   const DATA = [
     {subject: 'Maths', first: 85, mid: 88, final: 92},
     {subject: 'English', first: 78, mid: 82, final: 80},

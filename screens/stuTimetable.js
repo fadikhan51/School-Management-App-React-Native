@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {ReactNativeZoomableView} from '@dudigital/react-native-zoomable-view';
 import {
   Image,
@@ -15,10 +15,14 @@ import {
 import DropDown from '../components/dropdown';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import colors from '../components/colors';
-import {Button} from 'react-native-paper';
+import {ActivityIndicator, Button} from 'react-native-paper';
+import firebase from '@react-native-firebase/app';
+import firestore from '@react-native-firebase/firestore';
 
-export default stuTimeTable = () => {
-  const [dialog, setDialog] = React.useState(false);
+export default stuTimeTable = ({navigation, route}) => {
+  const [dialog, setDialog] = useState(false);
+  const [imgURL, setimgURL] = useState('');
+  const [processed, setProcessed] = useState(false);
   const DATA = [
     {
       id: 1,
@@ -43,8 +47,34 @@ export default stuTimeTable = () => {
       <Text style={styles.row}>{item.title}</Text>
     </View>
   );
+  useEffect(() => {
+    fetchImgUrl();
+  }, []);
+
+  const fetchImgUrl = async () => {
+    try {
+      const doc = await firebase
+        .firestore()
+        .collection('Class')
+        .doc('9ErJfOwyHema90wofy4u')
+        .get();
+
+      // console.log(doc);
+      if (doc.exists) {
+        const data = doc.data();
+        console.log(data.timetable);
+        setimgURL(`data:image/png;base64,${data.timetable}`);
+        setProcessed(true);
+      } else {
+        console.log('doc doesnt exist');
+      }
+    } catch (error) {
+      console.error('Error fetching document: ', error);
+    }
+  };
+
   //   const onClose=() => setModalVisible(false),
-  return (
+  return processed ? (
     <View style={{flex: 1}}>
       <View style={styles.header}>
         <View style={styles.backButton}>
@@ -68,9 +98,7 @@ export default stuTimeTable = () => {
 
       <View style={styles.imgContainer}>
         <TouchableOpacity onPress={() => setDialog(true)}>
-          <Image
-            style={styles.img}
-            source={require('../assets/stu.jpg')}></Image>
+          <Image style={styles.img} source={{uri: imgURL}}></Image>
         </TouchableOpacity>
       </View>
       <View style={styles.rulesContainer}>
@@ -98,14 +126,15 @@ export default stuTimeTable = () => {
               initialZoom={1}
               bindToBorders={true}
               captureEvent={true}>
-              <Image
-                style={styles.imgmodal}
-                source={require('../assets/stuTimetable.jpg')}></Image>
+                {console.log(imgURL)}
+              <Image style={styles.imgmodal} source={{uri: imgURL}}></Image>
             </ReactNativeZoomableView>
           </View>
         </View>
       </Modal>
     </View>
+  ) : (
+    <ActivityIndicator size="large" color={colors.dark} />
   );
 };
 const styles = StyleSheet.create({

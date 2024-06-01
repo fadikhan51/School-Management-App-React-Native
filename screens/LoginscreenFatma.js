@@ -3,13 +3,18 @@ import {
     Text,
     Image,
     StyleSheet,
+    ScrollView,
     KeyboardAvoidingView,
   } from "react-native";
   import { Button, TextInput, IconButton } from "react-native-paper";
   import { useState } from "react";
+  import { useFonts } from "expo-font";
   import colors from "../components/colors";
+  import firebase from '@react-native-firebase/app';
+import '@react-native-firebase/firestore';
+import TeacherScreen from "./teacherScreen";
   
-  export default LoginScreen = ({ navigation }) => {
+  export default LoginScreen = ({ navigation ,route}) => {
   
     const [secureTextEntry, setSecureTextEntry] = useState(true);
     const [iconName, setIconName] = useState("eye");
@@ -18,6 +23,10 @@ import {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
   
+    const { role } = route.params;
+    console.log("My role is: "+role)
+
+
     const toggleSecureEntry = () => {
       setSecureTextEntry(!secureTextEntry);
       setIconName(secureTextEntry ? "eye-off" : "eye");
@@ -38,9 +47,50 @@ import {
     const setPasswordTxt = (value) => {
       setPassword(value);
     };
-  
+    
+
+
+    const handleLogin = async () => {
+      try {
+        let userRef;
+        if (role === "Teacher") {
+          userRef = firebase.firestore().collection("Teacher");
+        } else if (role === "Student") {
+          userRef = firebase.firestore().collection("Student");
+        } else if (role === "Admin") {
+          userRef = firebase.firestore().collection("Admin");
+        } else {
+          return;
+        }
+    
+        const snapshot = await userRef
+          .where("email", "==", email)
+          .where("password", "==", password)
+          .get();
+    
+        if (snapshot.empty) {
+          // User not found or invalid credentials
+          alert("Invalid email or password.");
+        } else {
+          // Authentication successful, navigate to appropriate screen
+          snapshot.forEach(doc => {
+            const userData = doc.data();
+            if (role === "Teacher") {
+              navigation.navigate("teacherScreen", { userData });
+            } else if (role === "Student") {
+              navigation.navigate("studentScreen", { userData });
+            } else if (role === "Admin") {
+              navigation.navigate("admin", { userData });
+            }
+          });
+        }
+      } catch (error) {
+        console.error("Error logging in:", error);
+        alert("An error occurred while logging in. Please check your internet connection or try again later.");
+      }
+    }; 
     return (
-      // <ScrollView alwaysBounceVertical={false} contentContainerStyle={styles.default}>
+      
       <KeyboardAvoidingView behavior="padding" style={styles.default}>
         <View style={styles.logoDiv}>
           <Image style={styles.logo} source={require("../assets/logo.png")} />
@@ -87,18 +137,22 @@ import {
           />
         </View>
         <View style={styles.btnDiv}>
-          <Button
-            mode="contained"
-            buttonColor={colors.dark}
-            style={styles.connectButton}
-            onPress={() => {
-              navigation.navigate("admin");
-            }}
-          >
-            Login
-          </Button>
-        </View>
+      <Button
+        mode="contained"
+        buttonColor={colors.dark}
+        style={styles.connectButton}
+        onPress={() => {
+          console.log("powilejfmfn")
+          handleLogin();
+        }}
+      >
+        Login
+      </Button>
+    </View>
+        
       </KeyboardAvoidingView>
+      
+   
     );
   };
   

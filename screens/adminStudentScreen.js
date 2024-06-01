@@ -217,7 +217,6 @@ const AdminStudentScreen = ({navigation}) => {
   const searchStd = () => {
     if (text.length > 0) {
       const filter = stdList.filter(std => {
-        console.log(typeof std.reg_no);
         return std.reg_no.toString().toLowerCase().includes(text.toLowerCase());
       });
       setStdList(filter);
@@ -232,6 +231,7 @@ const AdminStudentScreen = ({navigation}) => {
         title="Manage Students"
         leftIcon="arrow-left"
         rightIcon="plus"
+        onRightPress = {() => {navigation.goBack()}}
         onPress={() => setModalVisible(true)}
       />
       <View

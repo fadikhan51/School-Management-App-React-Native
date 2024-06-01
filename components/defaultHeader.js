@@ -12,8 +12,12 @@ const HeaderDefault = props => {
           name={`${props.leftIcon}`}
           size={30}
           color={colors.dark}
+          onPress={
+            props.onRightPress ? props.onRightPress : () => {}
+          }
         />
       </View>
+
       <Text style={[styles.headerTxt, {alignSelf: 'center'}]}>{props.title}</Text>
       <View style={styles.download}>
         <MaterialCommunityIcons
